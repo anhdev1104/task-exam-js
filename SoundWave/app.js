@@ -28,6 +28,9 @@ const prevBtn = $('.btn-prev');
 const randomBtn = $('.btn-random');
 const repeatBtn = $('.btn-repeat');
 const playList = $('.playlist');
+const volumeUp = $('.btn-volume-up');
+const volumeMute = $('.btn-volume-mute');
+const progressVolume = $('#volume');
 
 const app = {
     currentIndex: 0,
@@ -35,6 +38,7 @@ const app = {
     isRandom: false,
     isRepeat: false,
     ischangeProgress:  true,
+    currentVolume: 1,
     config: JSON.parse(localStorage.getItem(PLAYER_STORAGE_KEY)) || {},
     songs: [
         {
@@ -261,7 +265,58 @@ const app = {
                 // thực hiện chức năng option
             }
         }
+        // Xử lí khi click vào button volume
+        // icon volume up
+        volumeUp.onclick = function () {
+            volumeUp.style.display = 'none';
+            volumeMute.style.display = 'block';
+            audio.volume = 0;
+            progressVolume.value = 0;
+        }
+        // icon volume mute
+        volumeMute.onclick = function () {
+            volumeMute.style.display = 'none';
+            volumeUp.style.display = 'block';
+            audio.volume = 1;
+            // progressVolume.value = 100;
+            if (currentVolume === 0) {
+                currentVolume = 1;
+            }
+            audio.volume = currentVolume;
+            progressVolume.value = currentVolume * 100;
+        }
 
+        // xử lí khi click thay đổi tiến độ volume
+        progressVolume.onclick = function (e) {
+            audio.volume = progressVolume.value / 100;
+            currentVolume = audio.volume;
+        }
+
+        // Xử lí khi người dùng giữ chuột để thay đổi volume pc
+        progressVolume.onmousemove = function (e) { // sự kiện lăn chuột qua phần tử 
+            audio.volume = progressVolume.value / 100;
+            currentVolume = audio.volume;
+            if (audio.volume === 0) {
+                volumeUp.style.display = 'none';
+                volumeMute.style.display = 'block';
+            } else {
+                volumeUp.style.display = 'block';
+                volumeMute.style.display = 'none';
+            }
+        }
+
+        // Xử lí khi người dùng ngón tay để thay đổi volume trên mobile
+        progressVolume.ontouchmove = function (e) { // sự kiện di chuyển ngón tay trên điện thoại 
+            audio.volume = progressVolume.value / 100;
+            currentVolume = audio.volume;
+            if (audio.volume === 0) {
+                volumeUp.style.display = 'none';
+                volumeMute.style.display = 'block';
+            } else {
+                volumeUp.style.display = 'block';
+                volumeMute.style.display = 'none';
+            }
+        }
     },
     scrollToActiveSong: function () {
         setTimeout(() => $('.active.song').scrollIntoView({
