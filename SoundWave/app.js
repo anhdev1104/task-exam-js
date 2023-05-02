@@ -31,13 +31,17 @@ const playList = $('.playlist');
 const volumeUp = $('.btn-volume-up');
 const volumeMute = $('.btn-volume-mute');
 const progressVolume = $('#volume');
+const timeStart = $('.time-start');
+const timeEnd = $('.time-end');
+
+let randomSongs = [];
 
 const app = {
     currentIndex: 0,
     isPlaying: false,
     isRandom: false,
     isRepeat: false,
-    ischangeProgress:  true,
+    ischangeProgress: true,
     currentVolume: 1,
     config: JSON.parse(localStorage.getItem(PLAYER_STORAGE_KEY)) || {},
     songs: [
@@ -180,11 +184,17 @@ const app = {
         // Khi tiến độ bài hát thay đổi
         audio.ontimeupdate = function () {
             if (_this.ischangeProgress && audio.duration) {
-                const progressPercent = Math.floor(audio.currentTime / audio.duration * 100); 
+                const progressPercent = Math.floor(audio.currentTime / audio.duration * 100);
                 progress.value = progressPercent;
+
+                _this.startTimer(audio.currentTime);
+                _this.endTimer();
+                // lấy current progress
+                _this.setConfig('lastProgress', audio.currentTime);
             }
+
         }
-        
+
         // Xử lí khi tua song
         progress.onchange = function (e) {
             const seekTime = audio.duration / 100 * e.target.value;
@@ -265,6 +275,7 @@ const app = {
                 // thực hiện chức năng option
             }
         }
+
         // Xử lí khi click vào button volume
         // icon volume up
         volumeUp.onclick = function () {
@@ -345,22 +356,46 @@ const app = {
     prevSong: function () {
         this.currentIndex--;
         if (this.currentIndex < 0) {
-            this.currentIndex = this.songs.length -1;
+            this.currentIndex = this.songs.length - 1;
         }
         this.loadCurrentSong();
     },
     playRandomSong: function () {
+        if (randomSongs.length === this.songs.length.length) {
+            randomSongs = [];
+        }
+
         let newIndex;
         do {
             newIndex = Math.floor(Math.random() * this.songs.length);
         } while (newIndex === this.currentIndex);
 
+        randomSongs.push(newIndex);
         this.currentIndex = newIndex;
         this.loadCurrentSong();
+    },
+    startTimer: function (e) {
+        let startMinutes = Math.floor(e / 60);
+        let startSeconds = Math.floor(e % 60);
+
+        let displayStartMinutes = startMinutes < 10 ? '0' + startMinutes : startMinutes;
+        let displayStartSeconds = startSeconds < 10 ? '0' + startSeconds : startSeconds;
+
+        timeStart.textContent = displayStartMinutes + ' : ' + displayStartSeconds;
+    },
+    endTimer: function () {
+        let endMinutes = Math.floor(audio.duration / 60);
+        let endSeconds = Math.floor(audio.duration % 60);
+
+        let displayEndMinutes = endMinutes < 10 ? '0' + endMinutes : endMinutes;
+        let displayEndSeconds = endSeconds < 10 ? '0' + endSeconds : endSeconds;
+
+        timeEnd.textContent = displayEndMinutes + ' : ' + displayEndSeconds;
     },
     start: function () {
         // Gán cấu hình từ config vào ứng dụng
         this.loadConfig();
+
         // Định nghĩa các thuộc tính cho object 
         this.defineProperties();
 
@@ -379,4 +414,4 @@ const app = {
     }
 }
 
-app.start()
+app.start();

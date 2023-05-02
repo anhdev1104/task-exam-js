@@ -6,8 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SoundWave</title>
+    <link rel="shortcut icon" href="./images/logo-favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="./style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
@@ -23,11 +26,10 @@
                 <h4>Now playing :</h4>
                 <h2>Già Cùng Nhau Là Được</h2>
             </header>
-            
+
             <!-- CD -->
             <div class="cd">
-                <div class="cd-thumb"
-                    style="background-image: url('./images/giacungnhauladuoc.jpg');">
+                <div class="cd-thumb" style="background-image: url('./images/giacungnhauladuoc.jpg');">
                 </div>
             </div>
 
@@ -60,6 +62,11 @@
             </div>
 
             <input id="progress" class="progress" type="range" value="0" step="1" min="0" max="100">
+
+            <div class="dashboard-time">
+                <span class="time-start">00:00</span>
+                <span class="time-end">00:00</span>
+            </div>
 
             <audio id="audio" src=""></audio>
         </div>

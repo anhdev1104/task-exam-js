@@ -17,7 +17,6 @@ body {
     background: linear-gradient(45deg, #6DB5CA, #816AD6, #F375B5);
 }
 
-
 .player {
     position: relative;
     max-width: 480px;
@@ -42,7 +41,7 @@ body {
     width: 100%;
     max-width: 480px;
     background-image: url('./images/background.jpg');
-    padding: 16px 16px 14px;     
+    padding: 16px 16px 14px;
     border-radius: 0 0 10px 10px;
 }
 
@@ -206,7 +205,7 @@ header {
 
 /* Playlist */
 .playlist {
-    margin-top: 470px;
+    margin-top: 488px;
     padding: 0 10px;
 }
 
@@ -265,6 +264,13 @@ header {
     cursor: pointer;
 }
 
+.dashboard-time {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: rgba(255, 255, 255, 0.578);
+}
+
 footer .info {
     text-align: center;
     color: #fff;
@@ -277,11 +283,7 @@ footer .info {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--primary-color); 
+    background: var(--primary-color);
     border-radius: 15px;
     height: 80px;
 }
-
-
-
-
