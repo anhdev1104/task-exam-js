@@ -4,7 +4,7 @@ const $$ = document.querySelectorAll.bind(document);
 function toast({
     title = '',
     message = '',
-    type = 3000,
+    type = '',
     duration = 3000
 }) {
     const main = $('#toast');
@@ -17,7 +17,7 @@ function toast({
             main.removeChild(toast);
         },duration + 1000);
 
-        // Auto remove toast when click
+        // Remove toast when click
         toast.onclick = function(e) {
             if (e.target.closest('.toast__close')) {
                 main.removeChild(toast);
