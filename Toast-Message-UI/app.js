@@ -4,7 +4,7 @@ const $$ = document.querySelectorAll.bind(document);
 function toast({
     title = '',
     message = '',
-    type = 3000,
+    type = '',
     duration = 3000
 }) {
     const main = $('#toast');
