@@ -95,6 +95,7 @@ function Validator(options) {
                     formElement.submit();
                 }
             }
+            formElement.reset(); // Reset form quay về trạng thái ban đầu
         }
         // Lặp qua mỗi rule và xử lí (lắng nghe sự kiện blur, input, ... )
         options.rules.forEach((rule) => {
