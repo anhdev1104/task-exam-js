@@ -62,6 +62,23 @@
                 <span class="form-message"></span>
             </div>
 
+            <div class="form-group">
+                <label for="province" class="form-label">Tỉnh/TP</label>
+                <select name="province" id="province" class="form-control">
+                    <option value="">-- Chọn Tỉnh/TP --</option>
+                    <option value="hni">Hà Nội</option>
+                    <option value="dng">Đà Nẵng</option>
+                    <option value="hcm">Hồ Chí Minh</option>
+                </select>
+                <span class="form-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="avatar" class="form-label">Ảnh đại diện</label>
+                <input id="avatar" name="avatar" type="file" class="form-control">
+                <span class="form-message"></span>
+            </div>
+
             <button class="form-submit">Đăng ký</button>
         </form>
 
@@ -82,12 +99,14 @@
                 Validator.isConfirmed('#password_confirmation', function () {
                     return document.querySelector('#form-1 #password').value;
                 }, 'Mật khẩu nhập lại không chính xác !'),
-                Validator.isRequired('input[name="gender"]'),
+                Validator.isRequired('input[name="gender"]', 'Vui lòng chọn giới tính !'),
+                Validator.isRequired('#province', 'Vui lòng chọn trường này !'),
+                Validator.isRequired('#avatar', 'Vui lòng tải ảnh đại diện !'),
             ],
-            onSubmit: function(data) {
-                    // Call API
-                    console.log(data);
-                }
+            onSubmit: function (data) {
+                // Call API
+                console.log(data);
+            }
         });
     </script>
 </body>

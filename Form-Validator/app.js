@@ -12,15 +12,15 @@ function Validator(options) {
         // Lặp qua từng rule & kiểm tra
         // Nếu có lỗi thì dừng việc kiểm tra
         for (let i = 0; i < rules.length; ++i) {
-            switch(inputElement.type) {
+            switch (inputElement.type) {
                 case 'radio':
                 case 'checkbox':
                     errorMessage = rules[i](
                         formElement.querySelector(rule.selector + ':checked')
                     );
                     break;
-                default: 
-                errorMessage = rules[i](inputElement.value);
+                default:
+                    errorMessage = rules[i](inputElement.value);
             }
             if (errorMessage) break;
         }
@@ -39,7 +39,7 @@ function Validator(options) {
     const formElement = document.querySelector(options.form);
     if (formElement) {
         // Khi submit form
-        formElement.onsubmit = function(e) {
+        formElement.onsubmit = function (e) {
             e.preventDefault();
 
             let isFormvalid = false;
@@ -60,16 +60,36 @@ function Validator(options) {
                     const enableInputs = formElement.querySelectorAll('[name]:not([disabled])');
                     // Cover từ nodeLists sang Array
                     const formValues = Array.from(enableInputs).reduce(function (values, input) {
-                        
-                        switch(input.type) {
-                            
+                        switch (input.type) {
+                            case 'radio':
+                                if (input.checked) {
+                                    values[input.name] = input.value;
+                                }
+                                if (!values[input.name]) {
+                                    values[input.name] = '';
+                                }
+                                break;
+                            case 'checkbox':
+                                if (!input.checked) return values;
+                                if (!values[input.name]) {
+                                    values[input.name] = '';
+                                }
+                                if (!Array.isArray(values[input.name])) {
+                                    values[input.name] = [];
+                                }
+                                values[input.name].push(input.value);
+                                break;
+                            case 'file': 
+                                values[input.name] = input.files;
+                                break;
+                            default:
+                                values[input.name] = input.value;
                         }
-
                         return values;
                     }, {});
 
                     options.onSubmit(formValues);
-                } 
+                }
                 // Trường hợp submit với hành vi mặc định
                 else {
                     formElement.submit();
@@ -88,12 +108,11 @@ function Validator(options) {
             const inputElements = formElement.querySelectorAll(rule.selector);
             Array.from(inputElements).forEach((inputElement) => {
                 // Xử lí trường hợp khi blur ra khỏi input
-                inputElement.onblur = function() {
+                inputElement.onblur = function () {
                     validate(inputElement, rule);
                 }
-
                 // Xử lí mỗi khi người dùng nhập vào input
-                inputElement.oninput = function() {
+                inputElement.oninput = function () {
                     const errorElement = inputElement.closest(options.formGroupSelector).querySelector(options.errorSelector);
                     errorElement.innerText = '';
                     inputElement.closest(options.formGroupSelector).classList.remove('invalid');
@@ -108,10 +127,10 @@ function Validator(options) {
 // Nguyên tắc của các rule
 // 1. khi có lỗi => trả ra message lỗi
 // 2. khi hợp lệ => không trả ra gì cả (undefined)
-Validator.isRequired = function(selector, message) {
+Validator.isRequired = function (selector, message) {
     return {
         selector,
-        test: function(value) {
+        test: function (value) {
             let result;
             if (typeof value === 'string') {
                 result = value.trim() ? undefined : message || 'Vui lòng nhập trường này !';
@@ -123,29 +142,29 @@ Validator.isRequired = function(selector, message) {
     };
 }
 
-Validator.isEmail = function(selector, message) {
+Validator.isEmail = function (selector, message) {
     return {
         selector,
-        test: function(value) {
+        test: function (value) {
             const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
             return regex.test(value) ? undefined : message || 'Trường này phải là email !';
         }
     };
 };
 
-Validator.minLength = function(selector, min, message) {
+Validator.minLength = function (selector, min, message) {
     return {
         selector,
-        test: function(value) {
+        test: function (value) {
             return value.trim().length >= min ? undefined : message || `Vui lòng nhập tối thiểu ${min} kí tự !`;
         }
     };
 }
 
-Validator.isConfirmed = function(selector, getConfirmValue, message) {
+Validator.isConfirmed = function (selector, getConfirmValue, message) {
     return {
         selector,
-        test: function(value) {
+        test: function (value) {
             return value.trim() === getConfirmValue() ? undefined : message || 'Giá trị nhập vào không chính xác !';
         }
     };
