@@ -47,7 +47,10 @@
 
     <script src="./app.js"></script>
     <script>
-        Validator('#register-form');
+        const form = new Validator('#register-form');
+        form.onSubmit = function (formData) {
+            console.log(formData);
+        }
     </script>
 </body>
 </html>
